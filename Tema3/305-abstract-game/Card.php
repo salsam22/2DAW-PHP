@@ -65,6 +65,4 @@ class Card {
     {
         $this->value = $value;
     }
-
-
 }

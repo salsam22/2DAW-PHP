@@ -3,7 +3,7 @@
 class CardCollection
 {
 
-    private array $cards;
+    protected array $cards;
 
     public function add(array $array)
     {
