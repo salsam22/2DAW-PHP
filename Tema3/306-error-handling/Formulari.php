@@ -39,38 +39,48 @@ if (isPost()) {
 
 
     try {
-        if (validate_string($_POST["firstname"], 1, 25))
+        if (validate_string($_POST["firstname"], 1, 25) == true)
             $firstname = clear($_POST["firstname"]);
     } catch (RequiredValidationException $e) {
-        $errors[] = "The name cannot be empty.";
+        $errors[] = "The firstname is empry";
     } catch (TooLongValidationException $e) {
-
+        $errors[] = "The firstname is soo long.";
     } catch (TooShortValidationException $e) {
-
+        $errors[] = "The firstname is soo short";
     }
 
 
-    if (validate_string($_POST["lastname"], 3, 50))
-        $lastname = clear($_POST["lastname"]);
-    else
-        $errors[] = "Apellido vacio o erròneo";
+    try {
+        if (validate_string($_POST["lastname"], 3, 50) == true)
+            $lastname = clear($_POST["lastname"]);
+    } catch (RequiredValidationException $e) {
+        $errors[] = "The lastname is empty";
+    } catch (TooLongValidationException $e) {
+        $errors[] = "The lastname is soo long.";
+    } catch (TooShortValidationException $e) {
+        $errors[] = "The lastname is soo short.";
+    }
+
+    try {
+        if (validate_phone($_POST["phone"]) == true)
+            $phone = clear($_POST["phone"]);
+    } catch (InvalidPhoneValidationException $e) {
+        $errors[] = $e->getMessage();
+    } catch (RequiredValidationException $e) {
+        $errors[] = $e->getMessage();
+    }
 
 
-    if (empty($_POST["phone"])) {
-        $errors[] = "Telèfon requerit";
-    } else {
-        if (preg_match("/^\d{9}$/", $_POST["phone"])) {
-            $phone = $_POST["phone"];
-        } else {
-            $errors[] = "Tlfn no valido, deben ser exactamente 9 digitos";
+    try {
+        if (validate_email($_POST["email"]) == true) {
+            $email = clear($_POST["email"]);
         }
+    } catch (RequiredValidationException $e) {
+        $errors[] = $e->getMessage();
+    } catch (InvalidEmailValidationException $e) {
+        $errors[] = $e->getMessage();
     }
-    $emailTest = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL);
-    if (empty($emailTest)) {
-        $errors[] = "Correu electrònic no indicat o erroni";
-    } else {
-        $email = $emailTest;
-    }
+
 
     if (empty($_POST["genre"]))
         $errors[]="Has de triar un gènere";
@@ -78,15 +88,23 @@ if (isPost()) {
         $genre = $_POST["genre"];
 
 
-    if (is_empty($_POST["hobbies"] ?? []))
-        $errors[]="Has de triar almenys un hobbie";
-    else
-        $hobbies = $_POST["hobbies"];
+    try {
+        if (is_empty($_POST["hobbies"] ?? [])){
 
-    if (is_empty($_POST["contact_time"] ?? []))
-        $errors[]="Has de triar almenys un hora";
-    else
-        $contact_time=$_POST["contact_time"];
+        } else
+            $hobbies = $_POST["hobbies"];
+    } catch (RequiredValidationException $e) {
+        $errors[] = "The hobbies cannot be empty";
+    }
+
+    try {
+        if (is_empty($_POST["contact_time"] ?? []))
+            $errors[] = "Has de triar almenys un hora";
+        else
+            $contact_time = $_POST["contact_time"];
+    } catch (RequiredValidationException $e) {
+        $errors[] = "The contact_time cannot be empty";
+    }
 
     $rand = rand();
     $image = $_FILES["imagen"]["name"];
