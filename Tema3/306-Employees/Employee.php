@@ -1,9 +1,11 @@
 <?php
-class Employee {
+
+class Employee
+{
     private string $name;
     private string $lastName;
     private float $salary;
-    private array $arrayPhones;
+    private array $arrayPhones = [];
     const MAX_SALARY = 3333;
 
     /**
@@ -13,16 +15,17 @@ class Employee {
      * @param float $salary
      */
 
-    public function __construct(string $name, string $lastName, float $salary) {
+    public function __construct(string $name, string $lastName, float $salary)
+    {
         $this->name = $name;
         $this->lastName = $lastName;
-        if ($salary == null){
+        if ($salary == null) {
             $this->salary = 1000;
         } else {
             if ($this->mustPayTaxes() == false) {
                 echo "no taxes";
             }
-            $this->salary= $salary;
+            $this->salary = $salary;
             echo "si taxes";
         }
     }
@@ -91,35 +94,50 @@ class Employee {
         return $this->arrayPhones;
     }
 
-    public function getFullName(): string {
+    public function getFullName(): string
+    {
 
         return $this->getName() . " " . $this->getLastName();
     }
 
-    public function mustPayTaxes(): bool {
+    public function mustPayTaxes(): bool
+    {
         if ($this->salary->getSalary() <= self::MAX_SALARY) {
             return false;
         }
         return true;
     }
 
-    public function addPhone(string $phone): void {
-        $this->arrayPhones[]=$phone;
+    public function addPhone(string $phone): void
+    {
+        $this->arrayPhones[] = $phone;
     }
 
-    public function listPhones(): string {
+    public function listPhones(): string
+    {
         $phones = implode(",", $this->arrayPhones);
         return $phones;
     }
 
-    public function emptyPhones(): void {
-        for ($i = 0; $i < count($this->arrayPhones); $i++) {
-            unset($this->arrayPhones[$i]);
-        }
+    public function emptyPhones(): void
+    {
+        unset($this->arrayPhones);
     }
 
-    public static function toHtml (Employee $emp): string {
+    public static function toHtml(Employee $emp): string
+    {
+        $cad = "<p>{$emp->getArrayPhones()}</p>";
 
-        return $emp->getFullName()." - ".$emp->listPhones()." - ".$emp->getSalary();
+        $cad .= "<ol>";
+        foreach ($emp->getArrayPhones() as $phone) {
+            //$cad . $phone
+        }
+
+
+
+
+
+
+        return "<p>" . $emp->getFullName() . " - " . $emp->listPhones() . " - " . $emp->getSalary() . "</p>";
     }
 }
