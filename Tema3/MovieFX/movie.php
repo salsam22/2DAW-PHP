@@ -3,18 +3,16 @@ declare(strict_types=1);
 
 require "src/Movie.php";
 
-//require "movies.inc.php";
-
 $id = 0;
 $errors = [];
 $movie = null;
 
-$idUrl = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+$idTemp = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 
-if (!empty($idUrl))
-    $id = $idUrl;
+if (!empty($idTemp))
+    $id = $idTemp;
 
-$pdo = new PDO("mysql:host=mysql-server;dbname=movieFX;charset=utf8", "dbuser", "1234");
+$pdo = new PDO("mysql:host=localhost;dbname=moviefx;charset=utf8", "dbuser", "1234");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $moviesStmt = $pdo->prepare("SELECT * FROM movie WHERE id=:id");
@@ -29,11 +27,11 @@ if (!empty($movieAr)) {
     $movie->setId((int)$movieAr["id"]);
     $movie->setTitle($movieAr["title"]);
     $movie->setPoster($movieAr["poster"]);
-    $movie->setReleaseDate($movieAr["release_date"]);
+    $movie->setReleaseDate($movieAr["release-date"]);
     $movie->setOverview($movieAr["overview"]);
-    $movie->setStarsRating((float)$movieAr["rating"]);
-    $arrayMovies[] = $movie;
-} else
+    $movie->setRating((float)$movieAr["rating"]);
+}
+else
     $errors[] = "La pel·lícula sol·licitada no existeix";
 
-require "view/movie.view.php";
+require "views/movie.view.php";

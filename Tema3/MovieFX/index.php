@@ -1,13 +1,12 @@
 <?php
+declare(strict_types=1);
 
 require "src/Movie.php";
 
-//require "movies.inc.php";
-
-$pdo = new PDO("mysql:host=mysql-server;dbname=movieFX;charset=utf8", "dbuser", "1234");
+$pdo = new PDO("mysql:host=localhost;dbname=moviefx;charset=utf8", "dbuser", "1234");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$moviesStmt = $pdo->prepare("SEELECT * FROM movie");
+$moviesStmt = $pdo->prepare("SELECT * FROM movie");
 $moviesStmt->setFetchMode(PDO::FETCH_ASSOC);
 $moviesStmt->execute();
 
@@ -20,8 +19,8 @@ foreach ($moviesAr as $movieAr) {
     $movie->setPoster($movieAr["poster"]);
     $movie->setReleaseDate($movieAr["release_date"]);
     $movie->setOverview($movieAr["overview"]);
-    $movie->setStarsRating((float)$movieAr["rating"]);
-    $arrayMovies[] = $movie;
+    $movie->setRating((float)$movieAr["rating"]);
+    $movies[] = $movie;
 }
 
-require "view/index.view.php";
+require "views/index.view.php";
