@@ -27,11 +27,11 @@ if (!empty($movieAr)) {
     $movie->setId((int)$movieAr["id"]);
     $movie->setTitle($movieAr["title"]);
     $movie->setPoster($movieAr["poster"]);
-    $movie->setReleaseDate($movieAr["release-date"]);
+    $movie->setReleaseDate($movieAr["release_date"]);
     $movie->setOverview($movieAr["overview"]);
-    $movie->setRating((float)$movieAr["rating"]);
+    $movie->setStarsRating((float)$movieAr["rating"]);
 }
 else
     $errors[] = "La pel·lícula sol·licitada no existeix";
 
-require "views/movie.view.php";
+require "view/movie.view.php";

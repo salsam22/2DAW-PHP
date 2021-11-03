@@ -19,8 +19,8 @@ foreach ($moviesAr as $movieAr) {
     $movie->setPoster($movieAr["poster"]);
     $movie->setReleaseDate($movieAr["release_date"]);
     $movie->setOverview($movieAr["overview"]);
-    $movie->setRating((float)$movieAr["rating"]);
+    $movie->setStarsRating((float)$movieAr["rating"]);
     $movies[] = $movie;
 }
 
-require "views/index.view.php";
+require "view/index.view.php";
