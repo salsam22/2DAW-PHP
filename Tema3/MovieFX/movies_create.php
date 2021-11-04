@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require "helpers.php";
-require 'src/Exceptions/FileUploadException.php';
+require_once "helpers.php";
+require_once 'src/Exceptions/FileUploadException.php';
 require_once 'src/Exceptions/NoUploadedFileException.php';
 require_once 'src/Movie.php';
 
@@ -108,4 +108,4 @@ if (isPost() && empty($errors)) {
         $message = "S'ha inserit el registre amb el ID ({$pdo->lastInsertId("movie")})";
 }
 
-require "views/movies-create.view.php";
+require "view/movies_create.view.php";
