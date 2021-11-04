@@ -99,7 +99,7 @@ if (isPost() && empty($errors)) {
     $moviesStmt = $pdo->prepare("INSERT INTO movie(title, overview, release_date, rating, poster) 
         VALUES (:title, :overview, :release_date, :rating, :poster)");
 
-    $moviesStmt->debugDumpParams();
+    //$moviesStmt->debugDumpParams();
     $moviesStmt->execute($data);
 
     if ($moviesStmt->rowCount() !== 1)

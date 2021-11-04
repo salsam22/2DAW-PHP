@@ -20,7 +20,7 @@ if (!empty($idTemp)) {
     throw new Exception("Id invalid");
 }
 
-$pdo = new PDO("mysql:host=localhost;dbname=moviefx;charset=utf-8", "dbuser", "1234");
+$pdo = new PDO("mysql:host=localhost;dbname=moviefx;charset=utf8", "dbuser", "1234");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $moviesStmt = $pdo->prepare("SELECT * FROM movie WHERE id=:id");
@@ -113,7 +113,7 @@ if (isPost()) {
 }
 
 if (isPost() && empty($errors)) {
-    $pdo = new PDO("mysql:host=mysql-server;dbname=movieFX;charset=utf8", "dbuser", "1234");
+    $pdo = new PDO("mysql:host=localhost;dbname=moviefx;charset=utf8", "dbuser", "1234");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::MYSQL_ATTR_INIT_COMMAND, 'SET NAMES utf8');
 
@@ -135,4 +135,4 @@ if (isPost() && empty($errors)) {
     }
 }
 
-require "views/movies-edit.view.php";
+require "view/movies_edit.view.php";
