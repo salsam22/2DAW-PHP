@@ -1,19 +1,39 @@
 <?php
 declare(strict_types=1);
 setcookie ("last_visit_date", (string) time(), time() + 604800);
-require "src/Movie.php";
+
 if(isset($_COOKIE['last_visit_date'])) {
     $seconds = $_COOKIE["last_visit_date"];
     if (filter_var($seconds,FILTER_VALIDATE_INT)) {
-        echo "<h1>Benvingut,  la seua ultima visita ha sigut: ".date("d/m/Y H:i:s", (int)$seconds)."</h1>";
+        $message = "Benvingut,  la seua ultima visita ha sigut: ".date("d/m/Y H:i:s", (int)$seconds);
     } else {
-        echo "<h1>Has modificat manualment la cookie de last_visit_date.</h1>";
+        $message = "Has modificat manualment la cookie de last_visit_date.";
     }
 
 } else {
-    echo "<h1>Benvingut!!</h1>";
+    $message = "Benvingut!";
 }
 
+session_start();
+
+$visits = $_SESSION["visits"]??[];
+
+if (!empty($visits)) {
+    $messageSession = "<ul><li>". implode("</li><li>", array_map(function ($v) {
+        return date ("d/m/Y H:i:s", $v);
+        }, $visits)) . "</li></ul>";
+} else {
+    $messageSession = "Benvingut! (versió sessió)!";
+}
+
+$_SESSION["visits"][] = time();
+
+require "src/Movie.php";
+require "src/User.php";
+
+echo "<p>$message</p>";
+
+echo "<p>$messageSession</p>";
 
     $pdo = new PDO("mysql:host=localhost;dbname=moviefx;charset=utf8", "dbuser", "1234");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -34,5 +54,17 @@ foreach ($moviesAr as $movieAr) {
     $movie->setStarsRating((float)$movieAr["rating"]);
     $movies[] = $movie;
 }
+
+echo "La pel·lícula {$movie->getTitle()} té una valoració de {$movie->getStarsRating()}";
+
+$user = new User(1, "Salva");
+
+$value = $movie->getStarsRating();
+
+echo "<p>L'usuari {$user->getUsername()} la valora en $value punts</p>";
+
+$user->rate($movie, (int)$value);
+
+echo "<p>La pel·lícula {$movie->getTitle()} té ara una valoració de {$movie->getStarsRating()}</p>";
 
 require "view/index.view.php";
